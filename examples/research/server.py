@@ -25,32 +25,14 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# Define input/output schemas for LangGraph agent
-class AgentInput(BaseModel):
-    """Input schema for the health agent."""
-
-    messages: list[Dict[str, Any]]
-
-
-class AgentOutput(BaseModel):
-    """Output schema for the health agent."""
-
-    messages: list[Dict[str, Any]]
-
-
-# Wrap the agent with explicit types to avoid schema inference issues
-typed_agent = agent.with_types(
-    input_type=AgentInput,
-    output_type=AgentOutput,
-)
-
 # Add the agent routes
 # This automatically creates:
 # - POST /health-agent/invoke - for synchronous invocation
 # - POST /health-agent/stream - for streaming responses
 # - POST /health-agent/batch - for batch processing
 # - GET /docs - API documentation
-add_routes(app, typed_agent, path="/health-agent")
+# Note: We don't use with_types() here to allow direct message passing
+add_routes(app, agent, path="/health-agent")
 
 
 if __name__ == "__main__":
