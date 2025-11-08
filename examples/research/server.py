@@ -15,9 +15,14 @@ load_dotenv(env_path)
 
 from fastapi import FastAPI
 from langserve import add_routes
-from pydantic import BaseModel
 
-from health_agent import agent
+# Import agent after environment variables are loaded
+try:
+    from health_agent import agent
+except Exception as e:
+    import sys
+    print(f"Error importing health_agent: {e}", file=sys.stderr)
+    raise
 
 app = FastAPI(
     title="Health Agent API",
