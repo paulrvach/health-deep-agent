@@ -4,22 +4,15 @@ steps:
     args:
       - 'build'
       - '-t'
-      - 'gcr.io/$PROJECT_ID/health-agent:$COMMIT_SHA'
-      - '-t'
       - 'gcr.io/$PROJECT_ID/health-agent:latest'
       - '-f'
-      - 'Dockerfile'
+      - 'examples/research/Dockerfile'
       - '.'
-    dir: 'examples/research'
 
   # Push the container image to Container Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/health-agent:$COMMIT_SHA']
-  
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/$PROJECT_ID/health-agent:latest']
 
 images:
-  - 'gcr.io/$PROJECT_ID/health-agent:$COMMIT_SHA'
   - 'gcr.io/$PROJECT_ID/health-agent:latest'
 
