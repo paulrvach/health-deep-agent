@@ -1,3 +1,8 @@
 -e ../../
 langgraph-cli[inmem]
 tavily-python
+langserve
+fastapi
+uvicorn[standard]
+python-dotenv
+langchain-google-genai
