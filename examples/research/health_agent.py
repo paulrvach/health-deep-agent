@@ -263,34 +263,5 @@ agent = create_agent(
     model=model,
     tools=[internet_search],
     system_prompt=health_instructions,
-    middleware=[
-        # Filesystem middleware for file operations
-        FilesystemMiddleware(),
-        # SubAgent middleware for doctor and coach agents
-        SubAgentMiddleware(
-            default_model=model,
-            default_tools=[internet_search],
-            subagents=[doctor_sub_agent, coach_sub_agent],
-            default_middleware=[
-                # Subagents also don't get TodoListMiddleware
-                FilesystemMiddleware(),
-                SummarizationMiddleware(
-                    model=model,
-                    max_tokens_before_summary=170000,
-                    messages_to_keep=6,
-                ),
-                PatchToolCallsMiddleware(),
-            ],
-            general_purpose_agent=True,
-        ),
-        # Summarization middleware to manage context length
-        SummarizationMiddleware(
-            model=model,
-            max_tokens_before_summary=170000,
-            messages_to_keep=6,
-        ),
-        # Patch tool calls middleware
-        PatchToolCallsMiddleware(),
-    ],
 ).with_config({"recursion_limit": 1000})
 
